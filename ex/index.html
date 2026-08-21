@@ -3,70 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>What Should I Watch? — 영화 취향 테스트</title>
+<title>오늘 뭐 보지? — OTT 결정 도우미</title>
 <style>
-  :root{
-    --bg:#101010; --card:#191919; --card2:#222; --text:#f5f5f2;
-    --muted:#a4a4a0; --line:#30302e; --accent:#e8d9bd;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--text);
-    font-family:Inter,Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-  .wrap{max-width:820px;margin:auto;padding:24px 20px 70px}
-  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:70px}
-  .logo{font-size:12px;font-weight:800;letter-spacing:.16em}
-  .count{font-size:12px;color:var(--muted)}
-  .screen{display:none;animation:up .35s ease}.screen.active{display:block}
-  @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  .hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center}
-  .eyebrow{font-size:11px;color:var(--muted);letter-spacing:.16em;font-weight:800;margin-bottom:20px}
-  h1{font-size:clamp(42px,8vw,76px);line-height:.98;letter-spacing:-.06em;margin:0 0 28px}
-  .hero p{max-width:600px;color:#b8b8b4;font-size:17px;line-height:1.75;margin:0 0 34px}
-  button{font:inherit;border:0;cursor:pointer}
-  .primary{background:var(--text);color:#111;border-radius:999px;padding:15px 24px;font-weight:700}
-  .primary:hover{transform:translateY(-2px)}
-  .hint{font-size:11px;color:#777;margin-top:13px}
-  .progress{height:2px;background:#2b2b2b;margin-bottom:48px}
-  .bar{height:100%;background:var(--accent);width:0;transition:.35s}
-  .qno{font-size:11px;color:#777;letter-spacing:.14em;margin-bottom:15px}
-  h2{font-size:clamp(28px,5vw,44px);line-height:1.2;letter-spacing:-.045em;margin:0 0 30px}
-  .choices{display:grid;gap:11px}
-  .choice{background:var(--card);color:var(--text);border:1px solid var(--line);
-    border-radius:18px;padding:21px;text-align:left;display:flex;gap:15px;align-items:center;width:100%}
-  .choice:hover{background:var(--card2);border-color:#4a4a47}
-  .letter{width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#292927;
-    display:grid;place-items:center;font-size:16px}
-  .choice .txt{line-height:1.5}
-  .result{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:32px}
-  .result h2{font-size:clamp(36px,7vw,58px);margin:10px 0 18px}
-  .desc{color:#bbb;line-height:1.75;font-size:16px}
-  .tags{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 28px}
-  .tag{background:#282825;border-radius:999px;padding:8px 11px;font-size:11px;color:#d0d0ca}
-  .why{border-top:1px solid var(--line);padding-top:22px;color:#c6c6c2;line-height:1.75}
-  .movies{margin-top:28px}
-  .movies h3{font-size:13px;margin:0 0 14px}
-  .movie-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .movie{background:#222;padding:12px;border-radius:15px}
-  .movie img.poster{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;background:#2a2a27}
-  .movie b{display:block;font-size:14px;margin-bottom:6px}
-  .movie span{font-size:11px;color:#92928e;line-height:1.5}
-  .buttons{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}
-  .secondary{padding:13px 19px;border-radius:999px;background:transparent;color:var(--text);border:1px solid #40403d}
-  .scores{margin-top:22px;background:#111;border-radius:18px;padding:18px}
-  .scores h3{font-size:12px;margin:0 0 15px}
-  .row{display:grid;grid-template-columns:70px 1fr 25px;gap:8px;align-items:center;margin:9px 0;font-size:10px;color:#aaa}
-  .track{height:6px;background:#30302d;border-radius:10px;overflow:hidden}.fill{height:100%;background:#ddd}
-  .foot{font-size:10px;color:#666;line-height:1.6;margin-top:22px}
-  .freetext{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:12px}
-  .freetext textarea{width:100%;min-height:88px;background:#111;border:1px solid var(--line);border-radius:12px;
-    color:var(--text);padding:14px;font:inherit;resize:vertical;margin-bottom:12px}
-  .freetext-actions{display:flex;gap:9px;flex-wrap:wrap}
-  .link-btn{background:transparent;color:var(--muted);border:1px solid #3a3a37;border-radius:999px;padding:12px 18px;font-size:13px}
-  .link-btn:hover{color:var(--text);border-color:#5a5a56}
-  .second-pick-toggle{margin-top:6px}
-  .second-pick{display:none;margin-top:26px;padding-top:24px;border-top:1px dashed var(--line)}
-  .second-pick .eyebrow{margin-bottom:12px}
-  @media(max-width:600px){.wrap{padding:20px 15px 50px}.movie-list{grid-template-columns:1fr}.result{padding:24px}}
+:root{--bg:#f4f3ef;--card:#fff;--text:#151515;--muted:#777;--line:#e4e2dc;--accent:#151515;--soft:#eeece5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:800px;margin:auto;padding:24px 18px 70px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:65px}
+.logo{font-size:11px;font-weight:800;letter-spacing:.15em}.count{font-size:11px;color:var(--muted)}
+.screen{display:none;animation:up .35s ease}.screen.active{display:block}@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center}.eyebrow{font-size:11px;letter-spacing:.15em;color:var(--muted);font-weight:800;margin-bottom:18px}
+h1{font-size:clamp(43px,8vw,76px);line-height:.98;letter-spacing:-.06em;margin:0 0 27px}.hero p{max-width:600px;color:#5f5f5b;line-height:1.8;font-size:17px;margin:0 0 32px}
+button{font:inherit;border:0;cursor:pointer}.primary{background:#151515;color:white;border-radius:999px;padding:15px 23px;font-weight:700}.primary:hover{transform:translateY(-2px)}
+.hint{font-size:11px;color:#999;margin-top:12px}.progress{height:2px;background:#ddd9d0;margin-bottom:46px}.bar{height:100%;background:#151515;width:0;transition:.3s}
+.qno{font-size:11px;color:#999;letter-spacing:.14em;margin-bottom:14px}h2{font-size:clamp(28px,5vw,43px);line-height:1.22;letter-spacing:-.045em;margin:0 0 28px}
+.sub{color:#777;font-size:13px;line-height:1.6;margin:-15px 0 24px}.choices{display:grid;gap:10px}
+.choice{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:19px 20px;text-align:left;display:flex;gap:14px;align-items:center;transition:.2s}
+.choice:hover{border-color:#aaa79f;background:#fafaf8}.choice.selected{border-color:#151515;background:#eeece5}.letter{width:27px;height:27px;flex:0 0 27px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:15px;color:#555}
+.multi .choice{align-items:flex-start}.check{width:20px;height:20px;border:1px solid #bbb;border-radius:5px;flex:0 0 20px;margin-top:2px}.selected .check{background:#151515;border-color:#151515;position:relative}.selected .check:after{content:"✓";color:white;font-size:13px;position:absolute;left:4px;top:0}
+.next{margin-top:20px}.disabled{opacity:.35;pointer-events:none}
+.opentext{display:flex;flex-direction:column;gap:10px}
+.opentext input{padding:16px 18px;border:1px solid var(--line);border-radius:14px;font:inherit;font-size:15px;background:#fff;width:100%}
+.opentext input:focus{outline:none;border-color:#151515}
+.skip-link{font-size:12px;color:#888;text-align:center;cursor:pointer;text-decoration:underline;margin-top:2px}
+.result{background:#fff;border:1px solid var(--line);border-radius:28px;padding:30px}.result h2{font-size:clamp(36px,7vw,57px);margin:8px 0 15px}.desc{font-size:16px;color:#555;line-height:1.75}
+.meta{display:flex;gap:7px;flex-wrap:wrap;margin:21px 0}.tag{background:#efede7;border-radius:999px;padding:7px 10px;font-size:10px}
+.section{border-top:1px solid var(--line);padding-top:22px;margin-top:25px}.section h3{font-size:13px;margin:0 0 12px}.reason{color:#555;line-height:1.75;font-size:14px}
+.movie{background:#171717;color:#fff;border-radius:20px;padding:22px;margin-top:12px}.movie .badge{font-size:9px;color:#aaa;letter-spacing:.08em}.movie h3{font-size:24px;margin:7px 0}.movie .info{font-size:11px;color:#aaa;margin-bottom:13px}.movie p{font-size:13px;color:#ccc;line-height:1.7;margin:0 0 16px}.ott{display:flex;gap:6px;flex-wrap:wrap}.ott span{background:#2a2a2a;padding:6px 8px;border-radius:999px;font-size:9px;color:#ddd}
+.poster{width:100%;height:auto;border-radius:14px;margin-bottom:16px;display:block}
+.avail{font-size:10px;color:#999;margin-top:10px}.buttons{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}.secondary{padding:13px 18px;border-radius:999px;background:transparent;color:#151515;border:1px solid #cbc8c0}
+.alt-btn{width:100%;justify-content:center;display:flex;text-align:center;margin-top:14px;background:#eeece5;color:#151515}
+.note{font-size:10px;color:#888;line-height:1.65;margin-top:22px}.multi-hint{font-size:11px;color:#888;margin:-15px 0 20px}
+@media(max-width:560px){.wrap{padding:20px 15px 50px}.result{padding:23px}}
 </style>
 </head>
 <body>
@@ -74,271 +40,225 @@
 <header><div class="logo">WHAT SHOULD I WATCH?</div><div class="count" id="count"></div></header>
 
 <section class="screen active" id="start">
-  <div class="hero">
-    <div class="eyebrow">MOVIE TASTE TEST</div>
-    <h1>좋아하는 영화를<br>말해주세요.</h1>
-    <p>
-      당신이 좋아하는 영화의 분위기와 감상 포인트를 따라가면,
-      아직 보지 않았을지도 모르는 <b>새로운 영화</b>를 찾아드립니다.
-      정답은 없어요. 오늘 보고 싶은 영화의 기분으로 골라주세요.
-    </p>
-    <button class="primary" onclick="start()">내 영화 취향 찾기 →</button>
-    <div class="hint">약 2분 · 6문항 · 결과 6가지</div>
-  </div>
+<div class="hero">
+<div class="eyebrow">OTT DECISION TEST</div>
+<h1>오늘도<br>뭘 볼지 모르겠다면.</h1>
+<p>OTT를 켜놓고 한참 목록만 보고 있나요?<br>
+지금의 <b>기분 · 컨디션 · 시간 · 취향 · 보고 싶은 느낌</b>을 알려주면,
+지금 바로 볼 수 있는 작품을 골라드릴게요.</p>
+<button class="primary" onclick="start()">오늘 볼 작품 찾기 →</button>
+<div class="hint">약 2분 · 8문항 · OTT 복수 선택 가능</div>
+</div>
 </section>
 
 <section class="screen" id="quiz">
-  <div class="progress"><div class="bar" id="bar"></div></div>
-  <div class="qno" id="qno"></div>
-  <h2 id="question"></h2>
-
-  <div class="freetext" id="freeTextBox" style="display:none">
-    <textarea id="freeTextInput" placeholder="예: 미키 17, 콘클라베, 소울처럼 최근에 좋았던 영화나 떠오르는 이야기를 자유롭게 적어주세요"></textarea>
-    <div class="freetext-actions">
-      <button class="primary" onclick="submitFreeText()">답변 제출하고 다음으로 →</button>
-      <button class="link-btn" onclick="showChoicesInstead()">모르겠어요, 선택지로 볼게요</button>
-    </div>
-  </div>
-
-  <div class="choices" id="choices"></div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="qno" id="qno"></div>
+<h2 id="question"></h2><div class="sub" id="sub"></div>
+<div class="choices" id="choices"></div>
+<div class="next"><button class="primary disabled" id="next" onclick="next()">다음 →</button></div>
 </section>
 
 <section class="screen" id="result">
-  <div class="eyebrow">YOUR MOVIE MATCH</div>
-  <div class="result">
-    <div class="eyebrow" id="type"></div>
-    <h2 id="title"></h2>
-    <div class="desc" id="desc"></div>
-    <div class="tags" id="tags"></div>
-    <div class="why" id="why"></div>
-    <div class="movies">
-      <h3>오늘의 추천 영화</h3>
-      <div class="movie-list" id="movies"></div>
-    </div>
-
-    <div class="second-pick-toggle">
-      <button class="secondary" id="secondPickToggleBtn" onclick="toggleSecondPick()">이 결과가 아쉽다면? 2번 픽 보기</button>
-    </div>
-    <div class="second-pick" id="secondPick">
-      <div class="eyebrow" id="type2"></div>
-      <h2 id="title2" style="font-size:clamp(26px,5vw,38px)"></h2>
-      <div class="desc" id="desc2"></div>
-      <div class="tags" id="tags2"></div>
-      <div class="why" id="why2"></div>
-      <div class="movies">
-        <h3>2번 픽 추천 영화</h3>
-        <div class="movie-list" id="movies2"></div>
-      </div>
-    </div>
-  </div>
-  <div class="scores"><h3>당신의 취향 스펙트럼</h3><div id="scoreRows"></div></div>
-  <div class="buttons">
-    <button class="primary" onclick="restart()">다시 테스트</button>
-    <button class="secondary" onclick="copyResult()">결과 문구 복사</button>
-  </div>
-  <div class="foot">※ 추천은 영화 취향을 바탕으로 만든 큐레이션 결과이며, 개인의 취향을 절대적으로 규정하지 않습니다. 포스터 이미지는 임시 플레이스홀더입니다.</div>
+<div class="eyebrow">TONIGHT'S PICK</div>
+<div class="result">
+<div class="eyebrow" id="resultKicker"></div>
+<h2 id="resultTitle"></h2><div class="desc" id="resultDesc"></div>
+<div class="meta" id="tags"></div>
+<div class="section"><h3>왜 지금 이 작품인가요?</h3><div class="reason" id="reason"></div></div>
+<div class="section"><h3>지금 볼 수 있는 추천</h3><div id="movies"></div></div>
+</div>
+<div class="buttons"><button class="primary" onclick="restart()">다시 테스트</button><button class="secondary" onclick="copyResult()">추천 문구 복사</button></div>
+<div class="note">※ OTT 콘텐츠의 제공 여부는 수시로 바뀝니다. 이 프로토타입의 추천 데이터는 2026년 8월 확인된 국내 스트리밍 정보를 바탕으로 구성했습니다. 실제 서비스 화면에서 최종 제공 여부를 확인해 주세요. 포스터 이미지는 프로토타입용 대체 이미지이며, 실제 서비스에서는 정식 포스터 이미지로 교체할 수 있습니다.</div>
 </section>
 </div>
 
 <script>
 const questions=[
- {q:"영화를 보고 난 뒤 가장 오래 남는 것은?", a:[
-  ["💗","인물의 감정과 관계","story",3],
-  ["🎨","아름답거나 강렬한 이미지","visual",3],
-  ["🌌","이상하고 새로운 세계관","concept",3],
-  ["🔥","긴장감과 몰입감","thrill",3]]},
- {q:"다음 중 더 끌리는 영화의 분위기는?", a:[
-  ["🌙","잔잔하고 쓸쓸한 밤","mood",3],
-  ["🌀","기묘하고 몽환적인 밤","concept",3],
-  ["⚡","숨 돌릴 틈 없는 밤","thrill",3],
-  ["☀️","따뜻하고 유쾌한 밤","warm",3]]},
- {q:"영화에서 이런 장면을 보면 특히 좋다.", a:[
-  ["🤍","말하지 않아도 감정이 전해지는 장면","story",3],
-  ["🖼️","한 장면만으로 영화의 세계가 느껴지는 장면","visual",3],
-  ["🔄","예상하지 못한 방식으로 이야기가 뒤집히는 장면","thrill",3],
-  ["🪐","현실에서는 볼 수 없는 설정이 자연스럽게 펼쳐지는 장면","concept",3],
-  ["🕵️","정교하게 짜여진 범죄와 심리전이 펼쳐지는 장면","thrill",3],
-  ["🎥","실존 인물과 현실을 있는 그대로 담아낸 장면","story",3]]},
- {q:"좋아하는 영화를 친구에게 추천할 때 가장 먼저 하는 말은?", a:[
-  ["💬","'이거 진짜 사람 이야기가 좋아.'","story",2],
-  ["🎬","'화면이 진짜 미쳤어.'","visual",2],
-  ["🧩","'설정이 엄청 독특해.'","concept",2],
-  ["⏱️","'일단 한 번 틀면 멈출 수 없어.'","thrill",2]]},
- {q:"다음 중 더 궁금한 영화는?", freeText:true, a:[
-  ["🌱","평범한 사람들의 특별한 순간을 담은 영화","story",3],
-  ["🌈","색과 공간이 압도적인 영화","visual",3],
-  ["🔀","장르의 규칙을 비틀어버리는 영화","concept",3],
-  ["❓","마지막까지 결말을 예측하기 어려운 영화","thrill",3]]},
- {q:"좋아하는 영화와 비슷한 영화를 찾을 때, 무엇이 가장 중요해?", a:[
-  ["👥","비슷한 인물과 감정선","story",3],
-  ["🖌️","비슷한 색감과 분위기","visual",3],
-  ["🎭","비슷한 장르나 독특한 설정","concept",3],
-  ["💥","비슷한 긴장감과 몰입도","thrill",3],
-  ["🤷","상관없다, 다 좋아!","none",0]]}
+{q:"먼저, 지금 사용 중인 OTT를 골라주세요.",sub:"복수 선택 가능 · 이 질문은 필수입니다.",multi:true,opts:["Netflix","TVING","Wavve","Watcha","Disney+","Coupang Play"],emojis:["🍿","📺","🌊","🎯","🏰","🚀"],key:"ott"},
+{q:"지금 내 상태는 어떤가요?",opts:["오늘 너무 지쳤다","머리가 복잡해서 다른 생각을 하고 싶다","에너지가 넘치고 재미있는 게 보고 싶다","그냥 편하게 쉬고 싶다"],emojis:["😴","🌀","⚡","🛋️"],key:"state"},
+{q:"지금 확보할 수 있는 시간은?",opts:["90분 이하 — 짧고 굵게","1시간 30분~2시간","2시간 이상도 괜찮아","시간은 상관없고 진짜 좋은 걸 보고 싶어"],emojis:["⏱️","🕑","🕰️","💎"],key:"time"},
+{q:"지금 가장 보고 싶은 장르는?",opts:["드라마 · 로맨스","스릴러 · 미스터리","SF · 판타지 · 독특한 세계관","코미디 · 따뜻한 영화","범죄 · 느와르","다큐멘터리 · 실화 이야기"],emojis:["💕","🕵️","🪐","😄","🔪","🎥"],key:"genre"},
+{q:"떠오르는 영화가 있다면 적어주세요.",sub:"오늘 끌리는 느낌의 영화를 자유롭게 적어주셔도 되고, 잘 모르겠으면 아래에서 골라도 돼요.",openText:true,opts:["《화양연화》처럼 감정과 분위기가 깊은 영화","《에브리씽 에브리웨어 올 앳 원스》처럼 독특하고 기발한 영화","《엣지 오브 투모로우》처럼 몰입감 강한 영화","《리틀 미스 선샤인》처럼 보고 나면 기분 좋은 영화"],emojis:["🎞️","🧩","💥","🌻"],key:"similar"},
+{q:"오늘은 영화에 얼마나 집중하고 싶나요?",opts:["휴대폰 보면서 가볍게","처음부터 끝까지 몰입해서","천천히 음미하면서","아무 생각 없이 빠져들고 싶다"],emojis:["📱","🧠","🍷","😵‍💫"],key:"focus"},
+{q:"결말은 어떤 게 좋아요?",opts:["예상 가능해도 따뜻하면 OK","마지막에 뒤통수 맞는 게 좋아","명확한 결말보다 여운이 좋아","끝까지 긴장감을 유지했으면","결말 스타일은 상관없다"],emojis:["☺️","🤯","🌫️","😬","🤷"],key:"ending"},
+{q:"혼자 보는 오늘 밤, 가장 중요한 조건은?",opts:["실패 없는 선택","새로운 영화를 발견하는 재미","지금 기분과 딱 맞는 것","이미 좋아하는 영화와 비슷한 것"],emojis:["✅","🔍","🎯","🔁"],key:"priority"}
 ];
 
-const results={
- story:{
-  type:"01 · THE HUMANIST", title:"사람을 오래 바라보는 사람",
-  desc:"당신은 사건보다 그 안의 사람을 기억하는 관객입니다. 거대한 이야기보다 인물의 표정, 관계의 변화, 말하지 못한 감정에 오래 머무는 편이에요.",
-  tags:["인물","감정","관계","여운"],
-  why:"당신의 선택에서는 <b>인물과 감정에 대한 관심</b>이 가장 강하게 나타났습니다. 그래서 비슷한 장르를 단순히 반복하기보다, 인물의 내면을 깊게 파고드는 영화들을 추천합니다.",
-  movies:[["패스트 라이브즈","셀린 송 · 2023"],["애프터 양","코고나다 · 2021"],["퍼펙트 데이즈","빔 벤더스 · 2023"]]
- },
- visual:{
-  type:"02 · THE AESTHETE", title:"장면을 기억하는 사람",
-  desc:"당신에게 영화는 이야기인 동시에 이미지입니다. 색, 빛, 공간, 질감처럼 말보다 먼저 다가오는 영화적 순간에 특히 강하게 끌립니다.",
-  tags:["미장센","색감","이미지","분위기"],
-  why:"당신은 <b>영화를 시각적인 언어로 받아들이는 성향</b>이 강합니다. 그래서 이야기보다 화면 자체가 하나의 경험이 되는 작품을 골랐어요.",
-  movies:[["그랜드 부다페스트 호텔","웨스 앤더슨 · 2014"],["화양연화","왕가위 · 2000"],["타오르는 여인의 초상","셀린 시아마 · 2019"]]
- },
- concept:{
-  type:"03 · THE EXPLORER", title:"새로운 세계를 찾는 사람",
-  desc:"익숙한 현실을 살짝 비틀어 놓은 영화가 좋습니다. '이런 세계가 가능하다면?'이라는 질문을 던지는 설정과 독특한 영화적 아이디어에 끌리는 타입입니다.",
-  tags:["세계관","상상력","SF","실험"],
-  why:"당신의 선택에서는 <b>새로운 설정과 영화적 아이디어</b>를 향한 호기심이 두드러졌습니다. 장르의 문법을 그대로 따르기보다 새로운 세계를 보여주는 작품을 추천합니다.",
-  movies:[["애프터 양","코고나다 · 2021"],["더 랍스터","요르고스 란티모스 · 2015"],["사랑은 낙엽을 타고","아키 카우리스마키 · 2023"]]
- },
- thrill:{
-  type:"04 · THE ADDICT", title:"몰입을 멈출 수 없는 사람",
-  desc:"영화를 보는 순간만큼은 현실을 잊고 싶어 하는 관객입니다. 속도감, 긴장, 반전, 강한 장르적 쾌감이 있는 작품에 특히 잘 빠져듭니다.",
-  tags:["몰입","긴장","반전","장르"],
-  why:"당신은 <b>영화가 만들어내는 몰입감</b>을 중요하게 보는 성향입니다. 그래서 처음부터 끝까지 관객을 붙잡는 작품들을 골랐습니다.",
-  movies:[["나이브스 아웃","라이언 존슨 · 2019"],["프리즈너스","드니 빌뇌브 · 2013"],["미션 임파서블: 폴아웃","크리스토퍼 맥쿼리 · 2018"]]
- },
- warm:{
-  type:"05 · THE COMFORT SEEKER", title:"영화에서 온기를 찾는 사람",
-  desc:"영화를 통해 기분을 환기하고 사람에 대한 믿음을 회복하는 타입입니다. 유머와 따뜻함, 작지만 좋은 순간이 있는 이야기를 좋아합니다.",
-  tags:["위로","유머","일상","따뜻함"],
-  why:"당신은 <b>영화가 남기는 정서적 만족감</b>을 중요하게 생각합니다. 보고 난 뒤 마음이 조금 가벼워지는 작품을 중심으로 추천했습니다.",
-  movies:[["리틀 미스 선샤인","조너선 데이턴 & 밸러리 패리스 · 2006"],["월터의 상상은 현실이 된다","벤 스틸러 · 2013"],["카모메 식당","오기가미 나오코 · 2006"]]
- },
- mood:{
-  type:"06 · THE POET", title:"여운을 오래 간직하는 사람",
-  desc:"영화가 끝난 뒤의 시간이 중요합니다. 명확한 결론보다 공기, 음악, 표정, 침묵처럼 설명하기 어려운 감정의 잔상이 오래 남는 작품을 좋아합니다.",
-  tags:["여운","침묵","정서","멜랑콜리"],
-  why:"당신의 선택에서는 <b>영화가 남기는 분위기와 여운</b>이 강하게 나타났습니다. 그래서 이야기가 끝난 뒤에도 생각이 계속되는 작품을 추천합니다.",
-  movies:[["드라이브 마이 카","하마구치 류스케 · 2021"],["패터슨","짐 자무시 · 2016"],["콜럼버스","코고나다 · 2017"]]
+const movies=[
+{name:"화양연화",year:"2000 · 왕가위",genres:["드라마","로맨스"],ott:["Netflix","Disney+","Wavve","Watcha","TVING"],mood:["tired","warm","mood"],time:"long",similar:["화양연화","romance"],desc:"말보다 시선과 침묵으로 감정을 쌓아가는 영화. 지친 밤, 강한 사건보다 깊은 분위기를 원할 때 좋습니다.",url:"https://www.justwatch.com/kr/영화/in-the-mood-for-love"},
+{name:"에브리씽 에브리웨어 올 앳 원스",year:"2022 · 다니엘스",genres:["SF","코미디","액션"],ott:["Netflix","Wavve","Watcha","TVING"],mood:["energy","escape","concept"],time:"mid",similar:["everything","concept"],desc:"머리가 복잡할수록 오히려 좋은 선택. 장르와 세계관을 폭발적으로 섞어 생각할 틈 없이 몰입시킵니다.",url:"https://www.justwatch.com/kr/영화/everything-everywhere-all-at-once"},
+{name:"나는 내일, 어제의 너와 만난다",year:"2016 · 미키 타카히로",genres:["로맨스","판타지"],ott:["Netflix","Wavve","Watcha","TVING"],mood:["warm","mood","romance"],time:"mid",similar:["romance"],desc:"오늘은 조금 애틋한 감정에 빠지고 싶다면. 시간이라는 장치를 이용해 사랑과 이별의 감정을 길게 남깁니다.",url:"https://www.justwatch.com/kr/영화/naneun-naeil-eojeyi-neowa-mannanda"},
+{name:"엣지 오브 투모로우",year:"2014 · 더그 라이먼",genres:["SF","액션"],ott:["Netflix","Wavve","Watcha"],mood:["energy","thrill"],time:"mid",similar:["edge"],desc:"오늘 아무 생각 없이 강하게 몰입하고 싶다면. 반복되는 하루와 전투가 만드는 속도감으로 초반부터 확실하게 끌고 갑니다.",url:"https://www.justwatch.com/kr/영화/edge-of-tomorrow"},
+{name:"월요일이 사라졌다",year:"2017 · 토미 워커",genres:["SF","스릴러"],ott:["Netflix","Watcha","TVING"],mood:["energy","thrill","concept"],time:"mid",similar:["thriller","concept"],desc:"한 편 안에서 SF 설정과 추격, 미스터리를 모두 즐기고 싶을 때. 복잡한 설정을 빠른 전개로 풀어냅니다.",url:"https://www.justwatch.com/kr/영화/was-haepeundeu-tu-meondei"},
+{name:"신과함께-죄와 벌",year:"2017 · 김용화",genres:["판타지","드라마"],ott:["Netflix","Wavve","Watcha","TVING"],mood:["warm","concept"],time:"long",similar:["fantasy"],desc:"감정적인 이야기와 판타지 세계를 함께 원할 때. 가족과 삶, 죽음을 다루면서도 장르적 재미를 놓치지 않습니다.",url:"https://www.justwatch.com/kr/영화/singwa-hamgge"},
+{name:"리틀 미스 선샤인",year:"2006 · 조너선 데이턴 & 밸러리 패리스",genres:["코미디","드라마"],ott:["Disney+"],mood:["warm","tired"],time:"mid",similar:["warm"],desc:"오늘은 그냥 마음을 좀 풀고 싶을 때. 엉망진창인 가족이 함께 여행하며 웃음과 온기를 남기는 작품입니다.",url:"https://www.justwatch.com/kr/영화/little-miss-sunshine"},
+{name:"베테랑",year:"2015 · 류승완",genres:["범죄","액션"],ott:["Netflix","Wavve","Watcha","TVING"],mood:["energy","thrill"],time:"mid",similar:["crime"],desc:"통쾌하게 몰아치는 형사물이 당기는 밤. 유쾌한 티키타카와 화끈한 액션으로 스트레스를 날려줍니다.",url:"https://www.justwatch.com/kr/영화/veteran"},
+{name:"나의 문어 선생님",year:"2020 · 크레이그 포스터 & 핍 에를리흐",genres:["다큐멘터리"],ott:["Netflix"],mood:["mood","warm"],time:"mid",similar:["documentary"],desc:"실화가 주는 잔잔한 울림이 필요한 밤. 사람과 자연이 맺는 낯선 우정을 담담하게 따라갑니다.",url:"https://www.justwatch.com/kr/영화/my-octopus-teacher"}
+];
+
+let qi=0, answers={}, multiSelected=[];
+
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+
+function buildChoiceBtn(x,n,emoji,multi){
+ const b=document.createElement("button");b.className="choice";
+ b.innerHTML=multi
+  ? `<span class="check"></span><span class="letter">${emoji}</span><span class="txt">${x}</span>`
+  : `<span class="letter">${emoji}</span><span class="txt">${x}</span>`;
+ b.onclick=()=>select(n,b,multi);
+ return b;
+}
+
+function start(){qi=0;answers={};multiSelected=[];showQ();document.getElementById("start").classList.remove("active");document.getElementById("result").classList.remove("active");document.getElementById("quiz").classList.add("active")}
+
+function showQ(){
+ const q=questions[qi];
+ document.getElementById("qno").textContent=`QUESTION ${String(qi+1).padStart(2,"0")}`;
+ document.getElementById("count").textContent=`${qi+1} / ${questions.length}`;
+ document.getElementById("bar").style.width=`${qi/questions.length*100}%`;
+ document.getElementById("question").textContent=q.q;document.getElementById("sub").textContent=q.sub||"";
+ const box=document.getElementById("choices");box.innerHTML="";
+ const next=document.getElementById("next");
+ next.classList.add("disabled");
+
+ if(q.multi){multiSelected=[];box.parentElement.classList.add("multi")}
+ else{box.parentElement.classList.remove("multi")}
+
+ if(q.openText){
+  next.style.display="none";
+  const wrap=document.createElement("div");
+  wrap.className="opentext";
+  wrap.innerHTML=`
+   <input type="text" id="freeText" placeholder="예: 화양연화, 라라랜드처럼... 떠오르는 영화를 적어주세요">
+   <button class="primary" id="freeTextBtn">이 느낌으로 추천받기 →</button>
+   <div class="skip-link" id="skipToChoices">🤔 딱히 떠오르는 영화가 없어요 · 선택지에서 고를래요</div>`;
+  box.appendChild(wrap);
+
+  const fb=document.createElement("div");
+  fb.className="choices";fb.id="fallbackChoices";fb.style.display="none";fb.style.marginTop="16px";
+  q.opts.forEach((x,n)=>fb.appendChild(buildChoiceBtn(x,n,q.emojis[n],false)));
+  box.appendChild(fb);
+
+  document.getElementById("skipToChoices").onclick=()=>{
+   fb.style.display="grid";
+   wrap.style.display="none";
+   next.style.display="";
+  };
+  document.getElementById("freeTextBtn").onclick=()=>{
+   const val=document.getElementById("freeText").value.trim();
+   if(!val)return;
+   answers[q.key]={type:"text",value:val};
+   qi++;if(qi<questions.length)showQ();else result();
+  };
+ } else {
+  next.style.display="";
+  q.opts.forEach((x,n)=>box.appendChild(buildChoiceBtn(x,n,q.emojis[n],q.multi)));
  }
-};
-
-let i=0, scores={story:0,visual:0,concept:0,thrill:0,warm:0,mood:0};
-let freeAnswers={};
-
-function start(){
- i=0; scores={story:0,visual:0,concept:0,thrill:0,warm:0,mood:0}; freeAnswers={};
- document.getElementById("start").classList.remove("active");
- document.getElementById("result").classList.remove("active");
- document.getElementById("quiz").classList.add("active");
- render();
+ next.textContent=qi===questions.length-1?"추천 결과 보기 →":"다음 →";
 }
-function render(){
- const q=questions[i];
- document.getElementById("qno").textContent=`QUESTION ${String(i+1).padStart(2,"0")}`;
- document.getElementById("count").textContent=`${i+1} / ${questions.length}`;
- document.getElementById("question").textContent=q.q;
- document.getElementById("bar").style.width=`${(i/questions.length)*100}%`;
 
- const box=document.getElementById("choices"); box.innerHTML="";
- q.a.forEach((x)=>{
-  const b=document.createElement("button"); b.className="choice";
-  b.innerHTML=`<span class="letter">${x[0]}</span><span class="txt">${x[1]}</span>`;
-  b.onclick=()=>answer(x[2],x[3]); box.appendChild(b);
- });
-
- const ftBox=document.getElementById("freeTextBox");
- const ftInput=document.getElementById("freeTextInput");
- ftInput.value="";
- if(q.freeText){
-  ftBox.style.display="block";
-  box.style.display="none";
- }else{
-  ftBox.style.display="none";
-  box.style.display="grid";
+function select(n,b,multi){
+ if(multi){if(multiSelected.includes(n)){multiSelected=multiSelected.filter(x=>x!==n);b.classList.remove("selected")}else{multiSelected.push(n);b.classList.add("selected")}document.getElementById("next").classList.toggle("disabled",multiSelected.length===0)}
+ else{answers[questions[qi].key]=n;document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");document.getElementById("next").classList.remove("disabled")}
+}
+function next(){
+ const q=questions[qi];
+ if(q.multi){if(!multiSelected.length)return;answers[q.key]=multiSelected.slice()}
+ else if(answers[q.key]===undefined)return;
+ qi++;if(qi<questions.length)showQ();else result();
+}
+function scoreMovie(m){
+ let s=0,o=answers;
+ const ott=o.ott||[];
+ if(m.ott.some(x=>ott.includes(x)))s+=8;
+ // 상태
+ const state=o.state;
+ if(state===0 && m.mood.includes("tired"))s+=5;
+ if(state===1 && m.mood.includes("escape"))s+=5;
+ if(state===2 && m.mood.includes("energy"))s+=5;
+ if(state===3 && m.mood.includes("warm"))s+=5;
+ // 시간
+ if(o.time===0 && m.time==="mid")s+=4;
+ if(o.time===1 && m.time==="mid")s+=5;
+ if(o.time===2 && m.time==="long")s+=5;
+ if(o.time===3)s+=2;
+ // 장르
+ const genre=o.genre;
+ if(genre===0 && m.genres.some(x=>["드라마","로맨스"].includes(x)))s+=5;
+ if(genre===1 && m.genres.some(x=>["스릴러","액션"].includes(x)))s+=5;
+ if(genre===2 && m.genres.some(x=>["SF","판타지"].includes(x)))s+=5;
+ if(genre===3 && m.genres.some(x=>["코미디","드라마"].includes(x)))s+=5;
+ if(genre===4 && m.genres.some(x=>["범죄","느와르","액션"].includes(x)))s+=5;
+ if(genre===5 && m.genres.some(x=>["다큐멘터리"].includes(x)))s+=6;
+ // similar (주관식 또는 선택형)
+ const sim=o.similar;
+ if(typeof sim==="number"){
+  if(sim===0 && m.similar.includes("romance"))s+=4;
+  if(sim===1 && m.similar.includes("everything"))s+=4;
+  if(sim===2 && m.similar.includes("edge"))s+=4;
+  if(sim===3 && m.similar.includes("warm"))s+=4;
+ } else if(sim && sim.type==="text" && sim.value){
+  const t=sim.value.toLowerCase();
+  if(m.name && t.includes(m.name.slice(0,2).toLowerCase()))s+=6;
  }
+ // focus
+ if(o.focus===1 && m.time!=="long")s+=2;
+ if(o.focus===3 && m.mood.includes("thrill"))s+=3;
+ // ending
+ if(o.ending===1 && m.mood.includes("concept"))s+=3;
+ if(o.ending===3 && m.mood.includes("thrill"))s+=3;
+ // priority
+ if(o.priority===0)s+=3;
+ if(o.priority===1 && m.mood.includes("concept"))s+=3;
+ if(o.priority===2)s+=5;
+ if(o.priority===3 && (m.similar.includes("romance")||m.similar.includes("warm")))s+=3;
+ return s;
 }
-function showChoicesInstead(){
- document.getElementById("freeTextBox").style.display="none";
- document.getElementById("choices").style.display="grid";
+function posterUrl(m){
+ return `https://placehold.co/400x560/171717/f2f2f2?font=raleway&text=${encodeURIComponent(m.name+"\n"+m.year.split(" · ")[0])}`;
 }
-function submitFreeText(){
- const val=document.getElementById("freeTextInput").value.trim();
- if(!val){ showChoicesInstead(); return; }
- freeAnswers[i]=val;
- i++;
- if(i<questions.length) render(); else show();
+function movieCard(m,badge){
+ return `<div class="movie">
+  <img class="poster" src="${posterUrl(m)}" alt="${esc(m.name)} 포스터 이미지" loading="lazy">
+  <div class="badge">${badge}</div>
+  <h3>${m.name}</h3>
+  <div class="info">${m.year} · ${m.genres.join(" · ")}</div>
+  <p>${m.desc}</p>
+  <div class="ott">${m.ott.filter(x=>answers.ott.includes(x)).map(x=>`<span>${x}</span>`).join("")}</div>
+  <div class="avail">선택한 OTT에서 현재 시청 가능 · <a href="${m.url}" target="_blank" style="color:#bbb">시청 가능 여부 확인 ↗</a></div>
+ </div>`;
 }
-function answer(k,v){
- if(k!=="none") scores[k]+=v;
- i++;
- if(i<questions.length) render(); else show();
-}
-function rankedKeys(){
- const keys=Object.keys(scores);
- const priority=["story","visual","concept","thrill","mood","warm"];
- return [...keys].sort((a,b)=>{
-  if(scores[b]!==scores[a]) return scores[b]-scores[a];
-  return priority.indexOf(a)-priority.indexOf(b);
- });
-}
-function winner(){ return rankedKeys()[0]; }
-function secondPick(){ return rankedKeys()[1]; }
+function result(){
+ document.getElementById("quiz").classList.remove("active");document.getElementById("result").classList.add("active");document.getElementById("count").textContent="RESULT";
+ const ranked=movies.map(m=>({...m,score:scoreMovie(m)})).sort((a,b)=>b.score-a.score);
+ const available=ranked.filter(m=>m.ott.some(x=>answers.ott.includes(x)));
+ const picks=available.slice(0,2);
+ const top=picks[0];
+ const titles={0:"지친 밤을 위한 한 편",1:"머리를 비우는 탈출구",2:"오늘 밤 제대로 몰입",3:"편하게 쉬어가는 영화"};
+ const state=answers.state;
+ document.getElementById("resultKicker").textContent=answers.ott.join(" · ");
+ document.getElementById("resultTitle").textContent=titles[state]||"오늘의 영화 처방";
+ document.getElementById("resultDesc").textContent=`지금의 컨디션과 취향, ${answers.ott.length}개의 OTT 구독 범위를 함께 고려해 골랐어요. 고민은 여기까지. 첫 번째 작품부터 눌러보세요.`;
+ document.getElementById("tags").innerHTML=[top.genres[0],top.genres[1]||"영화",`약 ${top.time==="mid"?"2시간":"2시간+ "}`].map(x=>`<span class="tag">#${x}</span>`).join("");
 
-function posterUrl(title){
- return `https://placehold.co/300x450/1a1a1a/e8d9bd?text=${encodeURIComponent(title)}`;
-}
-function renderMovies(list){
- return list.map(m=>`<div class="movie"><img class="poster" src="${posterUrl(m[0])}" alt="${m[0]} 포스터"><b>${m[0]}</b><span>${m[1]}</span></div>`).join("");
-}
+ let simNote="";
+ if(answers.similar && typeof answers.similar==="object" && answers.similar.value){
+  simNote=`<br><br>'<b>${esc(answers.similar.value)}</b>' 같은 영화를 좋아한다고 하셔서, 비슷한 정서를 가진 작품을 우선 반영했어요.`;
+ }
+ document.getElementById("reason").innerHTML=`<b>${top.name}</b>을 1순위로 추천합니다. ${top.desc}${simNote}<br><br>현재 선택한 OTT 중 <b>${top.ott.filter(x=>answers.ott.includes(x)).join(", ")}</b>에서 시청 가능한 작품으로 우선 매칭했습니다.`;
 
-let secondPickOpen=false;
-function toggleSecondPick(){
- secondPickOpen=!secondPickOpen;
- document.getElementById("secondPick").style.display=secondPickOpen?"block":"none";
- document.getElementById("secondPickToggleBtn").textContent=secondPickOpen?"2번 픽 닫기":"이 결과가 아쉽다면? 2번 픽 보기";
+ let html=movieCard(picks[0],"TODAY'S #1 PICK");
+ if(picks[1]){
+  html+=`<button class="secondary alt-btn" id="showAlt">🤔 1번 픽이 아쉽다면? 2번 픽 보기 →</button>
+  <div id="pick2Wrap" style="display:none">${movieCard(picks[1],"ALTERNATIVE PICK")}</div>`;
+ }
+ document.getElementById("movies").innerHTML=html;
+ const altBtn=document.getElementById("showAlt");
+ if(altBtn){altBtn.onclick=()=>{document.getElementById("pick2Wrap").style.display="block";altBtn.style.display="none"}}
 }
-
-function show(){
- document.getElementById("quiz").classList.remove("active");
- document.getElementById("result").classList.add("active");
- document.getElementById("count").textContent="RESULT";
-
- secondPickOpen=false;
- document.getElementById("secondPick").style.display="none";
- document.getElementById("secondPickToggleBtn").textContent="이 결과가 아쉽다면? 2번 픽 보기";
-
- const r=results[winner()];
- document.getElementById("type").textContent=r.type;
- document.getElementById("title").textContent=r.title;
- document.getElementById("desc").textContent=r.desc;
- document.getElementById("tags").innerHTML=r.tags.map(t=>`<span class="tag">#${t}</span>`).join("");
- document.getElementById("why").innerHTML=r.why;
- document.getElementById("movies").innerHTML=renderMovies(r.movies);
-
- const r2=results[secondPick()];
- document.getElementById("type2").textContent=r2.type;
- document.getElementById("title2").textContent=r2.title;
- document.getElementById("desc2").textContent=r2.desc;
- document.getElementById("tags2").innerHTML=r2.tags.map(t=>`<span class="tag">#${t}</span>`).join("");
- document.getElementById("why2").innerHTML=r2.why;
- document.getElementById("movies2").innerHTML=renderMovies(r2.movies);
-
- const labels={story:"인물/감정",visual:"비주얼",concept:"세계관",thrill:"몰입",warm:"위로",mood:"여운"};
- const max=Math.max(...Object.values(scores),1);
- document.getElementById("scoreRows").innerHTML=Object.entries(scores).map(([k,v])=>{
-  return `<div class="row"><span>${labels[k]}</span><div class="track"><div class="fill" style="width:${Math.round(v/max*100)}%"></div></div><span>${v}</span></div>`;
- }).join("");
-}
-function restart(){
- document.getElementById("result").classList.remove("active");
- document.getElementById("start").classList.add("active");
- document.getElementById("count").textContent="";
-}
-function copyResult(){
- const r=results[winner()];
- const text=`내 영화 취향은 '${r.title}' — 오늘의 추천: ${r.movies.map(x=>x[0]).join(", ")}`;
- navigator.clipboard?.writeText(text).then(()=>alert("결과가 복사됐어요!")).catch(()=>alert(text));
-}
+function restart(){document.getElementById("result").classList.remove("active");document.getElementById("start").classList.add("active");document.getElementById("count").textContent=""}
+function copyResult(){const t=document.getElementById("resultTitle").textContent+" — "+document.querySelector(".movie h3").textContent;navigator.clipboard?.writeText(t).then(()=>alert("추천 문구가 복사됐어요!")).catch(()=>alert(t))}
 </script>
 </body>
 </html>
