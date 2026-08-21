@@ -32,10 +32,10 @@
   h2{font-size:clamp(28px,5vw,44px);line-height:1.2;letter-spacing:-.045em;margin:0 0 30px}
   .choices{display:grid;gap:11px}
   .choice{background:var(--card);color:var(--text);border:1px solid var(--line);
-    border-radius:18px;padding:21px;text-align:left;display:flex;gap:15px;align-items:center}
+    border-radius:18px;padding:21px;text-align:left;display:flex;gap:15px;align-items:center;width:100%}
   .choice:hover{background:var(--card2);border-color:#4a4a47}
-  .letter{width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:#292927;
-    display:grid;place-items:center;font-size:11px;color:#bbb}
+  .letter{width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#292927;
+    display:grid;place-items:center;font-size:16px}
   .choice .txt{line-height:1.5}
   .result{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:32px}
   .result h2{font-size:clamp(36px,7vw,58px);margin:10px 0 18px}
@@ -46,8 +46,9 @@
   .movies{margin-top:28px}
   .movies h3{font-size:13px;margin:0 0 14px}
   .movie-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .movie{background:#222;padding:16px;border-radius:15px;min-height:110px}
-  .movie b{display:block;font-size:14px;margin-bottom:8px}
+  .movie{background:#222;padding:12px;border-radius:15px}
+  .movie img.poster{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;margin-bottom:10px;display:block;background:#2a2a27}
+  .movie b{display:block;font-size:14px;margin-bottom:6px}
   .movie span{font-size:11px;color:#92928e;line-height:1.5}
   .buttons{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}
   .secondary{padding:13px 19px;border-radius:999px;background:transparent;color:var(--text);border:1px solid #40403d}
@@ -56,6 +57,15 @@
   .row{display:grid;grid-template-columns:70px 1fr 25px;gap:8px;align-items:center;margin:9px 0;font-size:10px;color:#aaa}
   .track{height:6px;background:#30302d;border-radius:10px;overflow:hidden}.fill{height:100%;background:#ddd}
   .foot{font-size:10px;color:#666;line-height:1.6;margin-top:22px}
+  .freetext{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:12px}
+  .freetext textarea{width:100%;min-height:88px;background:#111;border:1px solid var(--line);border-radius:12px;
+    color:var(--text);padding:14px;font:inherit;resize:vertical;margin-bottom:12px}
+  .freetext-actions{display:flex;gap:9px;flex-wrap:wrap}
+  .link-btn{background:transparent;color:var(--muted);border:1px solid #3a3a37;border-radius:999px;padding:12px 18px;font-size:13px}
+  .link-btn:hover{color:var(--text);border-color:#5a5a56}
+  .second-pick-toggle{margin-top:6px}
+  .second-pick{display:none;margin-top:26px;padding-top:24px;border-top:1px dashed var(--line)}
+  .second-pick .eyebrow{margin-bottom:12px}
   @media(max-width:600px){.wrap{padding:20px 15px 50px}.movie-list{grid-template-columns:1fr}.result{padding:24px}}
 </style>
 </head>
@@ -73,7 +83,7 @@
       정답은 없어요. 오늘 보고 싶은 영화의 기분으로 골라주세요.
     </p>
     <button class="primary" onclick="start()">내 영화 취향 찾기 →</button>
-    <div class="hint">약 2분 · 7문항 · 결과 5가지</div>
+    <div class="hint">약 2분 · 6문항 · 결과 6가지</div>
   </div>
 </section>
 
@@ -81,6 +91,15 @@
   <div class="progress"><div class="bar" id="bar"></div></div>
   <div class="qno" id="qno"></div>
   <h2 id="question"></h2>
+
+  <div class="freetext" id="freeTextBox" style="display:none">
+    <textarea id="freeTextInput" placeholder="예: 미키 17, 콘클라베, 소울처럼 최근에 좋았던 영화나 떠오르는 이야기를 자유롭게 적어주세요"></textarea>
+    <div class="freetext-actions">
+      <button class="primary" onclick="submitFreeText()">답변 제출하고 다음으로 →</button>
+      <button class="link-btn" onclick="showChoicesInstead()">모르겠어요, 선택지로 볼게요</button>
+    </div>
+  </div>
+
   <div class="choices" id="choices"></div>
 </section>
 
@@ -96,47 +115,66 @@
       <h3>오늘의 추천 영화</h3>
       <div class="movie-list" id="movies"></div>
     </div>
+
+    <div class="second-pick-toggle">
+      <button class="secondary" id="secondPickToggleBtn" onclick="toggleSecondPick()">이 결과가 아쉽다면? 2번 픽 보기</button>
+    </div>
+    <div class="second-pick" id="secondPick">
+      <div class="eyebrow" id="type2"></div>
+      <h2 id="title2" style="font-size:clamp(26px,5vw,38px)"></h2>
+      <div class="desc" id="desc2"></div>
+      <div class="tags" id="tags2"></div>
+      <div class="why" id="why2"></div>
+      <div class="movies">
+        <h3>2번 픽 추천 영화</h3>
+        <div class="movie-list" id="movies2"></div>
+      </div>
+    </div>
   </div>
   <div class="scores"><h3>당신의 취향 스펙트럼</h3><div id="scoreRows"></div></div>
   <div class="buttons">
     <button class="primary" onclick="restart()">다시 테스트</button>
     <button class="secondary" onclick="copyResult()">결과 문구 복사</button>
   </div>
-  <div class="foot">※ 추천은 영화 취향을 바탕으로 만든 큐레이션 결과이며, 개인의 취향을 절대적으로 규정하지 않습니다.</div>
+  <div class="foot">※ 추천은 영화 취향을 바탕으로 만든 큐레이션 결과이며, 개인의 취향을 절대적으로 규정하지 않습니다. 포스터 이미지는 임시 플레이스홀더입니다.</div>
 </section>
 </div>
 
 <script>
 const questions=[
  {q:"영화를 보고 난 뒤 가장 오래 남는 것은?", a:[
-  ["인물의 감정과 관계","story",3],["아름답거나 강렬한 이미지","visual",3],
-  ["이상하고 새로운 세계관","concept",3],["긴장감과 몰입감","thrill",3]]},
+  ["💗","인물의 감정과 관계","story",3],
+  ["🎨","아름답거나 강렬한 이미지","visual",3],
+  ["🌌","이상하고 새로운 세계관","concept",3],
+  ["🔥","긴장감과 몰입감","thrill",3]]},
  {q:"다음 중 더 끌리는 영화의 분위기는?", a:[
-  ["잔잔하고 쓸쓸한 밤","mood",3],["기묘하고 몽환적인 밤","concept",3],
-  ["숨 돌릴 틈 없는 밤","thrill",3],["따뜻하고 유쾌한 밤","warm",3]]},
+  ["🌙","잔잔하고 쓸쓸한 밤","mood",3],
+  ["🌀","기묘하고 몽환적인 밤","concept",3],
+  ["⚡","숨 돌릴 틈 없는 밤","thrill",3],
+  ["☀️","따뜻하고 유쾌한 밤","warm",3]]},
  {q:"영화에서 이런 장면을 보면 특히 좋다.", a:[
-  ["말하지 않아도 감정이 전해지는 장면","story",3],
-  ["한 장면만으로 영화의 세계가 느껴지는 장면","visual",3],
-  ["예상하지 못한 방식으로 이야기가 뒤집히는 장면","thrill",3],
-  ["현실에서는 볼 수 없는 설정이 자연스럽게 펼쳐지는 장면","concept",3]]},
+  ["🤍","말하지 않아도 감정이 전해지는 장면","story",3],
+  ["🖼️","한 장면만으로 영화의 세계가 느껴지는 장면","visual",3],
+  ["🔄","예상하지 못한 방식으로 이야기가 뒤집히는 장면","thrill",3],
+  ["🪐","현실에서는 볼 수 없는 설정이 자연스럽게 펼쳐지는 장면","concept",3],
+  ["🕵️","정교하게 짜여진 범죄와 심리전이 펼쳐지는 장면","thrill",3],
+  ["🎥","실존 인물과 현실을 있는 그대로 담아낸 장면","story",3]]},
  {q:"좋아하는 영화를 친구에게 추천할 때 가장 먼저 하는 말은?", a:[
-  ["'이거 진짜 사람 이야기가 좋아.'","story",2],
-  ["'화면이 진짜 미쳤어.'","visual",2],
-  ["'설정이 엄청 독특해.'","concept",2],
-  ["'일단 한 번 틀면 멈출 수 없어.'","thrill",2]]},
- {q:"오늘 영화를 한 편 본다면 어떤 감정을 느끼고 싶어?", a:[
-  ["마음이 오래 남는 여운","mood",3],["새로운 생각과 질문","concept",3],
-  ["짜릿한 몰입","thrill",3],["기분 좋은 위로","warm",3]]},
- {q:"다음 중 더 궁금한 영화는?", a:[
-  ["평범한 사람들의 특별한 순간을 담은 영화","story",3],
-  ["색과 공간이 압도적인 영화","visual",3],
-  ["장르의 규칙을 비틀어버리는 영화","concept",3],
-  ["마지막까지 결말을 예측하기 어려운 영화","thrill",3]]},
+  ["💬","'이거 진짜 사람 이야기가 좋아.'","story",2],
+  ["🎬","'화면이 진짜 미쳤어.'","visual",2],
+  ["🧩","'설정이 엄청 독특해.'","concept",2],
+  ["⏱️","'일단 한 번 틀면 멈출 수 없어.'","thrill",2]]},
+ {q:"다음 중 더 궁금한 영화는?", freeText:true, a:[
+  ["🌱","평범한 사람들의 특별한 순간을 담은 영화","story",3],
+  ["🌈","색과 공간이 압도적인 영화","visual",3],
+  ["🔀","장르의 규칙을 비틀어버리는 영화","concept",3],
+  ["❓","마지막까지 결말을 예측하기 어려운 영화","thrill",3]]},
  {q:"좋아하는 영화와 비슷한 영화를 찾을 때, 무엇이 가장 중요해?", a:[
-  ["비슷한 인물과 감정선","story",3],
-  ["비슷한 색감과 분위기","visual",3],
-  ["비슷한 장르나 독특한 설정","concept",3],
-  ["비슷한 긴장감과 몰입도","thrill",3]]}
+  ["👥","비슷한 인물과 감정선","story",3],
+  ["🖌️","비슷한 색감과 분위기","visual",3],
+  ["🎭","비슷한 장르나 독특한 설정","concept",3],
+  ["💥","비슷한 긴장감과 몰입도","thrill",3],
+  ["🤷","상관없다, 다 좋아!","none",0]]}
 ];
 
 const results={
@@ -185,9 +223,10 @@ const results={
 };
 
 let i=0, scores={story:0,visual:0,concept:0,thrill:0,warm:0,mood:0};
+let freeAnswers={};
 
 function start(){
- i=0; scores={story:0,visual:0,concept:0,thrill:0,warm:0,mood:0};
+ i=0; scores={story:0,visual:0,concept:0,thrill:0,warm:0,mood:0}; freeAnswers={};
  document.getElementById("start").classList.remove("active");
  document.getElementById("result").classList.remove("active");
  document.getElementById("quiz").classList.add("active");
@@ -199,39 +238,93 @@ function render(){
  document.getElementById("count").textContent=`${i+1} / ${questions.length}`;
  document.getElementById("question").textContent=q.q;
  document.getElementById("bar").style.width=`${(i/questions.length)*100}%`;
+
  const box=document.getElementById("choices"); box.innerHTML="";
- q.a.forEach((x,n)=>{
+ q.a.forEach((x)=>{
   const b=document.createElement("button"); b.className="choice";
-  b.innerHTML=`<span class="letter">${String.fromCharCode(65+n)}</span><span class="txt">${x[0]}</span>`;
-  b.onclick=()=>answer(x[1],x[2]); box.appendChild(b);
+  b.innerHTML=`<span class="letter">${x[0]}</span><span class="txt">${x[1]}</span>`;
+  b.onclick=()=>answer(x[2],x[3]); box.appendChild(b);
  });
+
+ const ftBox=document.getElementById("freeTextBox");
+ const ftInput=document.getElementById("freeTextInput");
+ ftInput.value="";
+ if(q.freeText){
+  ftBox.style.display="block";
+  box.style.display="none";
+ }else{
+  ftBox.style.display="none";
+  box.style.display="grid";
+ }
 }
-function answer(k,v){
- scores[k]+=v; i++;
+function showChoicesInstead(){
+ document.getElementById("freeTextBox").style.display="none";
+ document.getElementById("choices").style.display="grid";
+}
+function submitFreeText(){
+ const val=document.getElementById("freeTextInput").value.trim();
+ if(!val){ showChoicesInstead(); return; }
+ freeAnswers[i]=val;
+ i++;
  if(i<questions.length) render(); else show();
 }
-function winner(){
- const keys=Object.keys(scores);
- let max=Math.max(...keys.map(k=>scores[k]));
- let tied=keys.filter(k=>scores[k]===max);
- // 동점이면 사용자에게 더 다양한 추천을 제공할 수 있도록 mood/warm보다
- // 직접적인 영화 취향 축(story/visual/concept/thrill)을 우선.
- const priority=["story","visual","concept","thrill","mood","warm"];
- return priority.find(k=>tied.includes(k));
+function answer(k,v){
+ if(k!=="none") scores[k]+=v;
+ i++;
+ if(i<questions.length) render(); else show();
 }
+function rankedKeys(){
+ const keys=Object.keys(scores);
+ const priority=["story","visual","concept","thrill","mood","warm"];
+ return [...keys].sort((a,b)=>{
+  if(scores[b]!==scores[a]) return scores[b]-scores[a];
+  return priority.indexOf(a)-priority.indexOf(b);
+ });
+}
+function winner(){ return rankedKeys()[0]; }
+function secondPick(){ return rankedKeys()[1]; }
+
+function posterUrl(title){
+ return `https://placehold.co/300x450/1a1a1a/e8d9bd?text=${encodeURIComponent(title)}`;
+}
+function renderMovies(list){
+ return list.map(m=>`<div class="movie"><img class="poster" src="${posterUrl(m[0])}" alt="${m[0]} 포스터"><b>${m[0]}</b><span>${m[1]}</span></div>`).join("");
+}
+
+let secondPickOpen=false;
+function toggleSecondPick(){
+ secondPickOpen=!secondPickOpen;
+ document.getElementById("secondPick").style.display=secondPickOpen?"block":"none";
+ document.getElementById("secondPickToggleBtn").textContent=secondPickOpen?"2번 픽 닫기":"이 결과가 아쉽다면? 2번 픽 보기";
+}
+
 function show(){
  document.getElementById("quiz").classList.remove("active");
  document.getElementById("result").classList.add("active");
  document.getElementById("count").textContent="RESULT";
+
+ secondPickOpen=false;
+ document.getElementById("secondPick").style.display="none";
+ document.getElementById("secondPickToggleBtn").textContent="이 결과가 아쉽다면? 2번 픽 보기";
+
  const r=results[winner()];
  document.getElementById("type").textContent=r.type;
  document.getElementById("title").textContent=r.title;
  document.getElementById("desc").textContent=r.desc;
  document.getElementById("tags").innerHTML=r.tags.map(t=>`<span class="tag">#${t}</span>`).join("");
  document.getElementById("why").innerHTML=r.why;
- document.getElementById("movies").innerHTML=r.movies.map(m=>`<div class="movie"><b>${m[0]}</b><span>${m[1]}</span></div>`).join("");
+ document.getElementById("movies").innerHTML=renderMovies(r.movies);
+
+ const r2=results[secondPick()];
+ document.getElementById("type2").textContent=r2.type;
+ document.getElementById("title2").textContent=r2.title;
+ document.getElementById("desc2").textContent=r2.desc;
+ document.getElementById("tags2").innerHTML=r2.tags.map(t=>`<span class="tag">#${t}</span>`).join("");
+ document.getElementById("why2").innerHTML=r2.why;
+ document.getElementById("movies2").innerHTML=renderMovies(r2.movies);
+
  const labels={story:"인물/감정",visual:"비주얼",concept:"세계관",thrill:"몰입",warm:"위로",mood:"여운"};
- const max=Math.max(...Object.values(scores));
+ const max=Math.max(...Object.values(scores),1);
  document.getElementById("scoreRows").innerHTML=Object.entries(scores).map(([k,v])=>{
   return `<div class="row"><span>${labels[k]}</span><div class="track"><div class="fill" style="width:${Math.round(v/max*100)}%"></div></div><span>${v}</span></div>`;
  }).join("");
