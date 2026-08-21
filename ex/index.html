@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Should I Watch? — 영화 취향 테스트</title>
+<style>
+  :root{
+    --bg:#101010; --card:#191919; --card2:#222; --text:#f5f5f2;
+    --muted:#a4a4a0; --line:#30302e; --accent:#e8d9bd;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:Inter,Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+  .wrap{max-width:820px;margin:auto;padding:24px 20px 70px}
+  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:70px}
+  .logo{font-size:12px;font-weight:800;letter-spacing:.16em}
+  .count{font-size:12px;color:var(--muted)}
+  .screen{display:none;animation:up .35s ease}.screen.active{display:block}
+  @keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center}
+  .eyebrow{font-size:11px;color:var(--muted);letter-spacing:.16em;font-weight:800;margin-bottom:20px}
+  h1{font-size:clamp(42px,8vw,76px);line-height:.98;letter-spacing:-.06em;margin:0 0 28px}
+  .hero p{max-width:600px;color:#b8b8b4;font-size:17px;line-height:1.75;margin:0 0 34px}
+  button{font:inherit;border:0;cursor:pointer}
+  .primary{background:var(--text);color:#111;border-radius:999px;padding:15px 24px;font-weight:700}
+  .primary:hover{transform:translateY(-2px)}
+  .hint{font-size:11px;color:#777;margin-top:13px}
+  .progress{height:2px;background:#2b2b2b;margin-bottom:48px}
+  .bar{height:100%;background:var(--accent);width:0;transition:.35s}
+  .qno{font-size:11px;color:#777;letter-spacing:.14em;margin-bottom:15px}
+  h2{font-size:clamp(28px,5vw,44px);line-height:1.2;letter-spacing:-.045em;margin:0 0 30px}
+  .choices{display:grid;gap:11px}
+  .choice{background:var(--card);color:var(--text);border:1px solid var(--line);
+    border-radius:18px;padding:21px;text-align:left;display:flex;gap:15px;align-items:center}
+  .choice:hover{background:var(--card2);border-color:#4a4a47}
+  .letter{width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:#292927;
+    display:grid;place-items:center;font-size:11px;color:#bbb}
+  .choice .txt{line-height:1.5}
+  .result{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:32px}
+  .result h2{font-size:clamp(36px,7vw,58px);margin:10px 0 18px}
+  .desc{color:#bbb;line-height:1.75;font-size:16px}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 28px}
+  .tag{background:#282825;border-radius:999px;padding:8px 11px;font-size:11px;color:#d0d0ca}
+  .why{border-top:1px solid var(--line);padding-top:22px;color:#c6c6c2;line-height:1.75}
+  .movies{margin-top:28px}
+  .movies h3{font-size:13px;margin:0 0 14px}
+  .movie-list{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .movie{background:#222;padding:16px;border-radius:15px;min-height:110px}
+  .movie b{display:block;font-size:14px;margin-bottom:8px}
+  .movie span{font-size:11px;color:#92928e;line-height:1.5}
+  .buttons{display:flex;gap:9px;margin-top:20px;flex-wrap:wrap}
+  .secondary{padding:13px 19px;border-radius:999px;background:transparent;color:var(--text);border:1px solid #40403d}
+  .scores{margin-top:22px;background:#111;border-radius:18px;padding:18px}
+  .scores h3{font-size:12px;margin:0 0 15px}
+  .row{display:grid;grid-template-columns:70px 1fr 25px;gap:8px;align-items:center;margin:9px 0;font-size:10px;color:#aaa}
+  .track{height:6px;background:#30302d;border-radius:10px;overflow:hidden}.fill{height:100%;background:#ddd}
+  .foot{font-size:10px;color:#666;line-height:1.6;margin-top:22px}
+  @media(max-width:600px){.wrap{padding:20px 15px 50px}.movie-list{grid-template-columns:1fr}.result{padding:24px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="logo">WHAT SHOULD I WATCH?</div><div class="count" id="count"></div></header>
+
+<section class="screen active" id="start">
+  <div class="hero">
+    <div class="eyebrow">MOVIE TASTE TEST</div>
+    <h1>좋아하는 영화를<br>말해주세요.</h1>
+    <p>
+      당신이 좋아하는 영화의 분위기와 감상 포인트를 따라가면,
+      아직 보지 않았을지도 모르는 <b>새로운 영화</b>를 찾아드립니다.
+      정답은 없어요. 오늘 보고 싶은 영화의 기분으로 골라주세요.
+    </p>
+    <button class="primary" onclick="start()">내 영화 취향 찾기 →</button>
+    <div class="hint">약 2분 · 7문항 · 결과 5가지</div>
+  </div>
+</section>
+
+<section class="screen" id="quiz">
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <div class="qno" id="qno"></div>
+  <h2 id="question"></h2>
+  <div class="choices" id="choices"></div>
+</section>
+
+<section class="screen" id="result">
+  <div class="eyebrow">YOUR MOVIE MATCH</div>
+  <div class="result">
+    <div class="eyebrow" id="type"></div>
+    <h2 id="title"></h2>
+    <div class="desc" id="desc"></div>
+    <div class="tags" id="tags"></div>
+    <div class="why" id="why"></div>
+    <div class="movies">
+      <h3>오늘의 추천 영화</h3>
+      <div class="movie-list" id="movies"></div>
+    </div>
+  </div>
+  <div class="scores"><h3>당신의 취향 스펙트럼</h3><div id="scoreRows"></div></div>
+  <div class="buttons">
+    <button class="primary" onclick="restart()">다시 테스트</button>
+    <button class="secondary" onclick="copyResult()">결과 문구 복사</button>
+  </div>
+  <div class="foot">※ 추천은 영화 취향을 바탕으로 만든 큐레이션 결과이며, 개인의 취향을 절대적으로 규정하지 않습니다.</div>
+</section>
+</div>
+
+<script>
+const questions=[
+ {q:"영화를 보고 난 뒤 가장 오래 남는 것은?", a:[
+  ["인물의 감정과 관계","story",3],["아름답거나 강렬한 이미지","visual",3],
+  ["이상하고 새로운 세계관","concept",3],["긴장감과 몰입감","thrill",3]]},
+ {q:"다음 중 더 끌리는 영화의 분위기는?", a:[
+  ["잔잔하고 쓸쓸한 밤","mood",3],["기묘하고 몽환적인 밤","concept",3],
+  ["숨 돌릴 틈 없는 밤","thrill",3],["따뜻하고 유쾌한 밤","warm",3]]},
+ {q:"영화에서 이런 장면을 보면 특히 좋다.", a:[
+  ["말하지 않아도 감정이 전해지는 장면","story",3],
+  ["한 장면만으로 영화의 세계가 느껴지는 장면","visual",3],
+  ["예상하지 못한 방식으로 이야기가 뒤집히는 장면","thrill",3],
+  ["현실에서는 볼 수 없는 설정이 자연스럽게 펼쳐지는 장면","concept",3]]},
+ {q:"좋아하는 영화를 친구에게 추천할 때 가장 먼저 하는 말은?", a:[
+  ["'이거 진짜 사람 이야기가 좋아.'","story",2],
+  ["'화면이 진짜 미쳤어.'","visual",2],
+  ["'설정이 엄청 독특해.'","concept",2],
+  ["'일단 한 번 틀면 멈출 수 없어.'","thrill",2]]},
+ {q:"오늘 영화를 한 편 본다면 어떤 감정을 느끼고 싶어?", a:[
+  ["마음이 오래 남는 여운","mood",3],["새로운 생각과 질문","concept",3],
+  ["짜릿한 몰입","thrill",3],["기분 좋은 위로","warm",3]]},
+ {q:"다음 중 더 궁금한 영화는?", a:[
+  ["평범한 사람들의 특별한 순간을 담은 영화","story",3],
+  ["색과 공간이 압도적인 영화","visual",3],
+  ["장르의 규칙을 비틀어버리는 영화","concept",3],
+  ["마지막까지 결말을 예측하기 어려운 영화","thrill",3]]},
+ {q:"좋아하는 영화와 비슷한 영화를 찾을 때, 무엇이 가장 중요해?", a:[
+  ["비슷한 인물과 감정선","story",3],
+  ["비슷한 색감과 분위기","visual",3],
+  ["비슷한 장르나 독특한 설정","concept",3],
+  ["비슷한 긴장감과 몰입도","thrill",3]]}
+];
+
+const results={
+ story:{
+  type:"01 · THE HUMANIST", title:"사람을 오래 바라보는 사람",
+  desc:"당신은 사건보다 그 안의 사람을 기억하는 관객입니다. 거대한 이야기보다 인물의 표정, 관계의 변화, 말하지 못한 감정에 오래 머무는 편이에요.",
+  tags:["인물","감정","관계","여운"],
+  why:"당신의 선택에서는 <b>인물과 감정에 대한 관심</b>이 가장 강하게 나타났습니다. 그래서 비슷한 장르를 단순히 반복하기보다, 인물의 내면을 깊게 파고드는 영화들을 추천합니다.",
+  movies:[["패스트 라이브즈","셀린 송 · 2023"],["애프터 양","코고나다 · 2021"],["퍼펙트 데이즈","빔 벤더스 · 2023"]]
+ },
+ visual:{
+  type:"02 · THE AESTHETE", title:"장면을 기억하는 사람",
+  desc:"당신에게 영화는 이야기인 동시에 이미지입니다. 색, 빛, 공간, 질감처럼 말보다 먼저 다가오는 영화적 순간에 특히 강하게 끌립니다.",
+  tags:["미장센","색감","이미지","분위기"],
+  why:"당신은 <b>영화를 시각적인 언어로 받아들이는 성향</b>이 강합니다. 그래서 이야기보다 화면 자체가 하나의 경험이 되는 작품을 골랐어요.",
+  movies:[["그랜드 부다페스트 호텔","웨스 앤더슨 · 2014"],["화양연화","왕가위 · 2000"],["타오르는 여인의 초상","셀린 시아마 · 2019"]]
+ },
+ concept:{
+  type:"03 · THE EXPLORER", title:"새로운 세계를 찾는 사람",
+  desc:"익숙한 현실을 살짝 비틀어 놓은 영화가 좋습니다. '이런 세계가 가능하다면?'이라는 질문을 던지는 설정과 독특한 영화적 아이디어에 끌리는 타입입니다.",
+  tags:["세계관","상상력","SF","실험"],
+  why:"당신의 선택에서는 <b>새로운 설정과 영화적 아이디어</b>를 향한 호기심이 두드러졌습니다. 장르의 문법을 그대로 따르기보다 새로운 세계를 보여주는 작품을 추천합니다.",
+  movies:[["애프터 양","코고나다 · 2021"],["더 랍스터","요르고스 란티모스 · 2015"],["사랑은 낙엽을 타고","아키 카우리스마키 · 2023"]]
+ },
+ thrill:{
+  type:"04 · THE ADDICT", title:"몰입을 멈출 수 없는 사람",
+  desc:"영화를 보는 순간만큼은 현실을 잊고 싶어 하는 관객입니다. 속도감, 긴장, 반전, 강한 장르적 쾌감이 있는 작품에 특히 잘 빠져듭니다.",
+  tags:["몰입","긴장","반전","장르"],
+  why:"당신은 <b>영화가 만들어내는 몰입감</b>을 중요하게 보는 성향입니다. 그래서 처음부터 끝까지 관객을 붙잡는 작품들을 골랐습니다.",
+  movies:[["나이브스 아웃","라이언 존슨 · 2019"],["프리즈너스","드니 빌뇌브 · 2013"],["미션 임파서블: 폴아웃","크리스토퍼 맥쿼리 · 2018"]]
+ },
+ warm:{
+  type:"05 · THE COMFORT SEEKER", title:"영화에서 온기를 찾는 사람",
+  desc:"영화를 통해 기분을 환기하고 사람에 대한 믿음을 회복하는 타입입니다. 유머와 따뜻함, 작지만 좋은 순간이 있는 이야기를 좋아합니다.",
+  tags:["위로","유머","일상","따뜻함"],
+  why:"당신은 <b>영화가 남기는 정서적 만족감</b>을 중요하게 생각합니다. 보고 난 뒤 마음이 조금 가벼워지는 작품을 중심으로 추천했습니다.",
+  movies:[["리틀 미스 선샤인","조너선 데이턴 & 밸러리 패리스 · 2006"],["월터의 상상은 현실이 된다","벤 스틸러 · 2013"],["카모메 식당","오기가미 나오코 · 2006"]]
+ },
+ mood:{
+  type:"06 · THE POET", title:"여운을 오래 간직하는 사람",
+  desc:"영화가 끝난 뒤의 시간이 중요합니다. 명확한 결론보다 공기, 음악, 표정, 침묵처럼 설명하기 어려운 감정의 잔상이 오래 남는 작품을 좋아합니다.",
+  tags:["여운","침묵","정서","멜랑콜리"],
+  why:"당신의 선택에서는 <b>영화가 남기는 분위기와 여운</b>이 강하게 나타났습니다. 그래서 이야기가 끝난 뒤에도 생각이 계속되는 작품을 추천합니다.",
+  movies:[["드라이브 마이 카","하마구치 류스케 · 2021"],["패터슨","짐 자무시 · 2016"],["콜럼버스","코고나다 · 2017"]]
+ }
+};
+
+let i=0, scores={story:0,visual:0,concept:0,thrill:0,warm:0,mood:0};
+
+function start(){
+ i=0; scores={story:0,visual:0,concept:0,thrill:0,warm:0,mood:0};
+ document.getElementById("start").classList.remove("active");
+ document.getElementById("result").classList.remove("active");
+ document.getElementById("quiz").classList.add("active");
+ render();
+}
+function render(){
+ const q=questions[i];
+ document.getElementById("qno").textContent=`QUESTION ${String(i+1).padStart(2,"0")}`;
+ document.getElementById("count").textContent=`${i+1} / ${questions.length}`;
+ document.getElementById("question").textContent=q.q;
+ document.getElementById("bar").style.width=`${(i/questions.length)*100}%`;
+ const box=document.getElementById("choices"); box.innerHTML="";
+ q.a.forEach((x,n)=>{
+  const b=document.createElement("button"); b.className="choice";
+  b.innerHTML=`<span class="letter">${String.fromCharCode(65+n)}</span><span class="txt">${x[0]}</span>`;
+  b.onclick=()=>answer(x[1],x[2]); box.appendChild(b);
+ });
+}
+function answer(k,v){
+ scores[k]+=v; i++;
+ if(i<questions.length) render(); else show();
+}
+function winner(){
+ const keys=Object.keys(scores);
+ let max=Math.max(...keys.map(k=>scores[k]));
+ let tied=keys.filter(k=>scores[k]===max);
+ // 동점이면 사용자에게 더 다양한 추천을 제공할 수 있도록 mood/warm보다
+ // 직접적인 영화 취향 축(story/visual/concept/thrill)을 우선.
+ const priority=["story","visual","concept","thrill","mood","warm"];
+ return priority.find(k=>tied.includes(k));
+}
+function show(){
+ document.getElementById("quiz").classList.remove("active");
+ document.getElementById("result").classList.add("active");
+ document.getElementById("count").textContent="RESULT";
+ const r=results[winner()];
+ document.getElementById("type").textContent=r.type;
+ document.getElementById("title").textContent=r.title;
+ document.getElementById("desc").textContent=r.desc;
+ document.getElementById("tags").innerHTML=r.tags.map(t=>`<span class="tag">#${t}</span>`).join("");
+ document.getElementById("why").innerHTML=r.why;
+ document.getElementById("movies").innerHTML=r.movies.map(m=>`<div class="movie"><b>${m[0]}</b><span>${m[1]}</span></div>`).join("");
+ const labels={story:"인물/감정",visual:"비주얼",concept:"세계관",thrill:"몰입",warm:"위로",mood:"여운"};
+ const max=Math.max(...Object.values(scores));
+ document.getElementById("scoreRows").innerHTML=Object.entries(scores).map(([k,v])=>{
+  return `<div class="row"><span>${labels[k]}</span><div class="track"><div class="fill" style="width:${Math.round(v/max*100)}%"></div></div><span>${v}</span></div>`;
+ }).join("");
+}
+function restart(){
+ document.getElementById("result").classList.remove("active");
+ document.getElementById("start").classList.add("active");
+ document.getElementById("count").textContent="";
+}
+function copyResult(){
+ const r=results[winner()];
+ const text=`내 영화 취향은 '${r.title}' — 오늘의 추천: ${r.movies.map(x=>x[0]).join(", ")}`;
+ navigator.clipboard?.writeText(text).then(()=>alert("결과가 복사됐어요!")).catch(()=>alert(text));
+}
+</script>
+</body>
+</html>
